@@ -17,6 +17,8 @@ public class User {
 
     private String password;
 
+    private Role[] roles;
+
     public String getId() {
         return id;
     }
@@ -55,5 +57,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role[] getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Role[] roles) {
+        this.roles = roles;
     }
 }
