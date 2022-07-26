@@ -49,7 +49,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseMessage("Error"));
         }
-        
+
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("Successfully create user"));
