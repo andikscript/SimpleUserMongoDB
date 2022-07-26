@@ -25,7 +25,7 @@ public class AuthController {
         if (user.getName() == null || user.getEmail() == null ||
         user.getUsername() == null || user.getPassword() == null ||
         user.getRoles().length == 0) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseMessage("Error"));
         }
 
