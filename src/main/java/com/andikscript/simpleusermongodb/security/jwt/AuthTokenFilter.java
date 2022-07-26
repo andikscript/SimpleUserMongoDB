@@ -3,6 +3,7 @@ package com.andikscript.simpleusermongodb.security.jwt;
 import com.andikscript.simpleusermongodb.security.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,14 +19,11 @@ import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-    private final JwtUtils jwtUtils;
+    @Autowired
+    private JwtUtils jwtUtils;
 
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
-    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
-        this.jwtUtils = jwtUtils;
-        this.userDetailsService = userDetailsService;
-    }
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
