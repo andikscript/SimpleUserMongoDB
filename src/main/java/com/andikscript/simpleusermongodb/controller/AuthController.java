@@ -1,9 +1,12 @@
 package com.andikscript.simpleusermongodb.controller;
 
+import com.andikscript.simpleusermongodb.exception.RefreshTokenException;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
+import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
+import com.andikscript.simpleusermongodb.payload.RefreshTokenResponse;
 import com.andikscript.simpleusermongodb.payload.UserPassRequest;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
 import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
@@ -85,11 +88,27 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        System.out.println(refreshToken.getToken());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new JwtResponse(
                         jwt, refreshToken.getToken(), userDetails.getUsername(),
                         userDetails.getPassword(), roles
                 ));
+    }
+
+    @PostMapping(value = "/refreshtoken", consumes = "application/json")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        String request = refreshTokenRequest.getRefreshToken();
+
+        return refreshTokenService.findByToken(request)
+                .map(refreshTokenService::verifyExpired)
+                .map(user -> {
+                    User user1 = user.getIdUser();
+                    String token = jwtUtils.generateTokenFromUsername(user.getIdUser().getUsername());
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body(new RefreshTokenResponse(token, request));
+                })
+                .orElseThrow(() -> new RefreshTokenException(request, "Refresh token not store on database"));
     }
 }
