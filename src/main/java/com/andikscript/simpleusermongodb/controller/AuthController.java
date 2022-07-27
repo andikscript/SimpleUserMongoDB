@@ -14,17 +14,16 @@ import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
 import com.andikscript.simpleusermongodb.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -116,5 +115,15 @@ public class AuthController {
                             .body(new RefreshTokenResponse(token, request));
                 })
                 .orElseThrow(() -> new RuntimeException());
+    }
+
+    @PostMapping(value = "/signout")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<?> signout(@RequestHeader(value = "Authorization") String token) {
+        String user = jwtUtils.getUsernameFromJwtToken(token.substring(7));
+        refreshTokenService.deleteByUser(userService.getUserByUsername(user).get());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Successfully signout"));
     }
 }
