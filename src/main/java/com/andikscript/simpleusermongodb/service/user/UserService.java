@@ -9,11 +9,5 @@ public interface UserService {
 
     void createUser(User user);
 
-    Optional<User> getUserById(String id);
-
-    List<User> getAllUser();
-
-    void putUser(User user);
-
-    void deleteUser(String id);
+    Optional<User> getUserByUsername(String username);
 }

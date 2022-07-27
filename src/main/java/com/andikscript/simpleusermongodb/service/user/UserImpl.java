@@ -23,22 +23,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(String id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<User> getAllUser() {
-        return null;
-    }
-
-    @Override
-    public void putUser(User user) {
-
-    }
-
-    @Override
-    public void deleteUser(String id) {
-
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

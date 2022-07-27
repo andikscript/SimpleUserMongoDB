@@ -60,6 +60,14 @@ public class AuthController {
                     .body(new ResponseMessage("Error"));
         }
 
+        System.out.println(userService.getUserByUsername(user.getUsername()));
+
+        if (userService.getUserByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(new ResponseMessage("User already create"));
+        }
+
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
         userService.createUser(user);
