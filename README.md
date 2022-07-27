@@ -22,6 +22,7 @@ Methods | Url | Action |
 | POST | /api/auth/signup | signup new account |
 | POST | /api/auth/signin | login an account |
 | POST | /api/auth/refreshtoken | get new token from refresh token |
+| POST | /api/auth/signout | logout an account |
 | GET | /api/test/all | public access content |
 | GET | /api/test/user | user, admion, root access content |
 | GET | /api/test/admin | admin, root access content |
