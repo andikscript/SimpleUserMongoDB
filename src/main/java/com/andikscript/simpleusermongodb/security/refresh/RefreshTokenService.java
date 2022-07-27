@@ -1,6 +1,5 @@
 package com.andikscript.simpleusermongodb.security.refresh;
 
-import com.andikscript.simpleusermongodb.exception.RefreshTokenException;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
 import com.andikscript.simpleusermongodb.repository.RefreshRepository;
