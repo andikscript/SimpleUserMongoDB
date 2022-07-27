@@ -3,14 +3,24 @@ package com.andikscript.simpleusermongodb.service.user;
 import com.andikscript.simpleusermongodb.handling.FailedValueBody;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
+import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
+import com.andikscript.simpleusermongodb.payload.JwtResponse;
+import com.andikscript.simpleusermongodb.payload.UserPassRequest;
 import com.andikscript.simpleusermongodb.repository.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
+import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
+import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserImpl implements UserService {
@@ -19,9 +29,20 @@ public class UserImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtUtils jwtUtils;
+
+    private final RefreshTokenService refreshTokenService;
+
+    public UserImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                    AuthenticationManager authenticationManager, JwtUtils jwtUtils,
+                    RefreshTokenService refreshTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -50,5 +71,30 @@ public class UserImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public JwtResponse authUser(UserPassRequest userPassRequest) throws FailedValueBody {
+        if (userPassRequest.getUsername() == null || userPassRequest.getPassword() == null) {
+            throw new FailedValueBody();
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userPassRequest.getUsername(),
+                        userPassRequest.getPassword())
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = jwtUtils.generateJwtToken(userDetails);
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        return new JwtResponse(
+                        jwt, refreshToken.getToken(), userDetails.getUsername(),
+                        userDetails.getPassword(), roles);
     }
 }

@@ -32,16 +32,13 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final AuthenticationManager authenticationManager;
-
     private final JwtUtils jwtUtils;
 
     private final RefreshTokenService refreshTokenService;
 
-    public AuthController(UserService userService, AuthenticationManager authenticationManager,
+    public AuthController(UserService userService,
                           JwtUtils jwtUtils, RefreshTokenService refreshTokenService) {
         this.userService = userService;
-        this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
     }
@@ -54,32 +51,10 @@ public class AuthController {
     }
 
     @PostMapping(value = "/signin", consumes = "application/json")
-    public ResponseEntity<?> authUser(@RequestBody UserPassRequest userPassRequest) {
-        if (userPassRequest.getUsername() == null || userPassRequest.getPassword() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseMessage("Error"));
-        }
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userPassRequest.getUsername(),
-                        userPassRequest.getPassword())
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        String jwt = jwtUtils.generateJwtToken(userDetails);
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+    public ResponseEntity<?> authUser(@RequestBody UserPassRequest userPassRequest) throws FailedValueBody {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new JwtResponse(
-                        jwt, refreshToken.getToken(), userDetails.getUsername(),
-                        userDetails.getPassword(), roles
-                ));
+                .body(userService.authUser(userPassRequest));
     }
 
     @PostMapping(value = "/refreshtoken", consumes = "application/json")
