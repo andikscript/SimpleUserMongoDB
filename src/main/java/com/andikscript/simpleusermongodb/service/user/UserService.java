@@ -10,4 +10,6 @@ public interface UserService {
     void createUser(User user);
 
     Optional<User> getUserByUsername(String username);
+
+    Optional<User> findByEmail(String email);
 }
