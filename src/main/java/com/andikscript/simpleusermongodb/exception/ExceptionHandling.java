@@ -2,6 +2,7 @@ package com.andikscript.simpleusermongodb.exception;
 
 
 import com.andikscript.simpleusermongodb.handling.FailedValueBody;
+import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import org.springframework.http.HttpStatus;
@@ -37,5 +38,12 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(new ResponseMessage("User already create"));
+    }
+
+    @ExceptionHandler(RefreshTokenExpired.class)
+    public ResponseEntity<?> refreshTokenExpired(RefreshTokenExpired e) {
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseMessage("Refresh token is expired"));
     }
 }
