@@ -1,10 +1,12 @@
 package com.andikscript.simpleusermongodb.controller;
 
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
+import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
 import com.andikscript.simpleusermongodb.payload.UserPassRequest;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
+import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
 import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
 import com.andikscript.simpleusermongodb.service.user.UserService;
 import org.springframework.http.HttpStatus;
@@ -34,11 +36,16 @@ public class AuthController {
 
     private final JwtUtils jwtUtils;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    private final RefreshTokenService refreshTokenService;
+
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder,
+                          AuthenticationManager authenticationManager, JwtUtils jwtUtils,
+                          RefreshTokenService refreshTokenService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping(value = "/signup", consumes = "application/json")
@@ -57,7 +64,7 @@ public class AuthController {
                 .body(new ResponseMessage("Successfully create user"));
     }
 
-    @PostMapping(value = "signin", consumes = "application/json")
+    @PostMapping(value = "/signin", consumes = "application/json")
     public ResponseEntity<?> authUser(@RequestBody UserPassRequest userPassRequest) {
         if (userPassRequest.getUsername() == null || userPassRequest.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -76,10 +83,13 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new JwtResponse(
-                        jwt, userDetails.getUsername(), userDetails.getPassword(), roles
+                        jwt, refreshToken.getToken(), userDetails.getUsername(),
+                        userDetails.getPassword(), roles
                 ));
     }
 }

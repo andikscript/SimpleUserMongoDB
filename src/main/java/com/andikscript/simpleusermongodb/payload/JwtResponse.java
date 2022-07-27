@@ -8,14 +8,17 @@ public class JwtResponse {
 
     private String type = "Bearer";
 
+    private String refreshToken;
+
     private String username;
 
     private String password;
 
     private List roles;
 
-    public JwtResponse(String accessToken, String username, String password, List roles) {
+    public JwtResponse(String accessToken, String refreshToken, String username, String password, List roles) {
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -27,6 +30,10 @@ public class JwtResponse {
 
     public String getType() {
         return type;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getUsername() {
