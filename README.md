@@ -1,5 +1,5 @@
-# SimpleUserMongoDB
-Simple signup and signin with spring boot and spring security json web token and with MongoDB
+# Simple User MongoDB (NoSQL) & H2 (SQL)
+Simple signup and signin with spring boot and spring security json web token and combine database MongoDB (NoSQL) & H2 (SQL)
 
 ## Featured :
 - Spring Boot 
