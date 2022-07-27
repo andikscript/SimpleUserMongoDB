@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.security.refresh;
 
+import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
 import com.andikscript.simpleusermongodb.repository.RefreshRepository;
@@ -45,7 +46,6 @@ public class RefreshTokenService {
     public RefreshToken verifyExpired(RefreshToken refreshToken) {
         if (refreshToken.getExpiredDate().compareTo(Instant.now()) < 0) {
             refreshRepository.delete(refreshToken);
-            throw new RuntimeException();
         }
 
         return refreshToken;
