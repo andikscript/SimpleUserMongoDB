@@ -2,6 +2,7 @@ package com.andikscript.simpleusermongodb.security.refresh;
 
 import com.andikscript.simpleusermongodb.exception.RefreshTokenException;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
+import com.andikscript.simpleusermongodb.model.User;
 import com.andikscript.simpleusermongodb.repository.RefreshRepository;
 import com.andikscript.simpleusermongodb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class RefreshTokenService {
 
     public Optional<RefreshToken> findByToken(String token) {
         return refreshRepository.findByToken(token);
+    }
+
+    public void deleteByUser(User user) {
+        refreshRepository.deleteByIdUser(user);
     }
 
     public RefreshToken createRefreshToken(String id) {
