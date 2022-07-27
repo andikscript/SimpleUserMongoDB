@@ -1,11 +1,13 @@
 package com.andikscript.simpleusermongodb.service.user;
 
 import com.andikscript.simpleusermongodb.handling.FailedValueBody;
+import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
-import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
+import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
+import com.andikscript.simpleusermongodb.payload.RefreshTokenResponse;
 import com.andikscript.simpleusermongodb.payload.UserPassRequest;
 import com.andikscript.simpleusermongodb.repository.UserRepository;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
@@ -69,11 +71,6 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
     public JwtResponse authUser(UserPassRequest userPassRequest) throws FailedValueBody {
         if (userPassRequest.getUsername() == null || userPassRequest.getPassword() == null) {
             throw new FailedValueBody();
@@ -96,5 +93,18 @@ public class UserImpl implements UserService {
         return new JwtResponse(
                         jwt, refreshToken.getToken(), userDetails.getUsername(),
                         userDetails.getPassword(), roles);
+    }
+
+    @Override
+    public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws RefreshTokenExpired {
+        String request = refreshTokenRequest.getRefreshToken();
+
+        return refreshTokenService.findByToken(request)
+                .map(refreshTokenService::verifyExpired)
+                .map(user -> {
+                    String token = jwtUtils.generateTokenFromUsername(user.getIdUser().getUsername());
+                    return new RefreshTokenResponse(token, request);
+                })
+                .orElseThrow(() -> new RefreshTokenExpired());
     }
 }
