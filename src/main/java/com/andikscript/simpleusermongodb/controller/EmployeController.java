@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.controller;
 
+import com.andikscript.simpleusermongodb.handling.FailedValueBody;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.h2.Employee;
 import com.andikscript.simpleusermongodb.service.employee.EmployeeService;
@@ -17,7 +18,7 @@ public class EmployeController {
     }
 
     @PostMapping(value = "/add", consumes = "application/json")
-    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) throws FailedValueBody {
         employeeService.createEmployee(employee);
         return ResponseEntity
                 .status(HttpStatus.OK)
