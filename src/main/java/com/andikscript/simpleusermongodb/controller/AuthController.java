@@ -1,6 +1,7 @@
 package com.andikscript.simpleusermongodb.controller;
 
 import com.andikscript.simpleusermongodb.handling.FailedValueBody;
+import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
@@ -58,18 +59,10 @@ public class AuthController {
     }
 
     @PostMapping(value = "/refreshtoken", consumes = "application/json")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        String request = refreshTokenRequest.getRefreshToken();
-
-        return refreshTokenService.findByToken(request)
-                .map(refreshTokenService::verifyExpired)
-                .map(user -> {
-                    User user1 = user.getIdUser();
-                    String token = jwtUtils.generateTokenFromUsername(user.getIdUser().getUsername());
-                    return ResponseEntity.status(HttpStatus.OK)
-                            .body(new RefreshTokenResponse(token, request));
-                })
-                .orElseThrow(() -> new RuntimeException());
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest)
+            throws RefreshTokenExpired {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.refreshToken(refreshTokenRequest));
     }
 
     @PostMapping(value = "/signout")
