@@ -1,5 +1,7 @@
 package com.andikscript.simpleusermongodb.controller;
 
+import com.andikscript.simpleusermongodb.handling.FailedValueBody;
+import com.andikscript.simpleusermongodb.handling.UserAlready;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
@@ -30,42 +32,22 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
 
     private final JwtUtils jwtUtils;
 
     private final RefreshTokenService refreshTokenService;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder,
-                          AuthenticationManager authenticationManager, JwtUtils jwtUtils,
-                          RefreshTokenService refreshTokenService) {
+    public AuthController(UserService userService, AuthenticationManager authenticationManager,
+                          JwtUtils jwtUtils, RefreshTokenService refreshTokenService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping(value = "/signup", consumes = "application/json")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        if (user.getName() == null || user.getEmail() == null ||
-        user.getUsername() == null || user.getPassword() == null ||
-        user.getRoles().length == 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseMessage("Error"));
-        }
-
-        if (userService.getUserByUsername(user.getUsername()).isPresent() ||
-            userService.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
-                    .body(new ResponseMessage("User already create, username or email already use"));
-        }
-
-        String password = passwordEncoder.encode(user.getPassword());
-        user.setPassword(password);
+    public ResponseEntity<?> createUser(@RequestBody User user) throws FailedValueBody, UserAlready {
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("Successfully create user"));
