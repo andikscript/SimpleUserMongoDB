@@ -11,7 +11,7 @@ public class RefreshToken {
     @Id
     private String id;
 
-    private String idUser;
+    private User idUser;
 
     private String token;
 
@@ -25,11 +25,11 @@ public class RefreshToken {
         this.id = id;
     }
 
-    public String getIdUser() {
+    public User getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public void setIdUser(User idUser) {
         this.idUser = idUser;
     }
 
