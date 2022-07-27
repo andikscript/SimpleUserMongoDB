@@ -1,6 +1,5 @@
 package com.andikscript.simpleusermongodb.controller;
 
-import com.andikscript.simpleusermongodb.exception.RefreshTokenException;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.RefreshToken;
 import com.andikscript.simpleusermongodb.model.User;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
