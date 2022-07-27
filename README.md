@@ -9,6 +9,7 @@ Simple signup and signin with spring boot and spring security json web token and
 - JWT Token
 - Refresh Token
 - MongoDB
+- H2 
 
 ## Roles
 - USER
