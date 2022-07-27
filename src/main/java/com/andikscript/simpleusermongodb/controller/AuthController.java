@@ -60,8 +60,6 @@ public class AuthController {
                     .body(new ResponseMessage("Error"));
         }
 
-        System.out.println(userService.getUserByUsername(user.getUsername()));
-
         if (userService.getUserByUsername(user.getUsername()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
