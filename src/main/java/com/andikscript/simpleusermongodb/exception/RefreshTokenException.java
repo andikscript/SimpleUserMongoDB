@@ -1,14 +1,18 @@
 package com.andikscript.simpleusermongodb.exception;
 
+import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class RefreshTokenException extends RuntimeException {
+@ControllerAdvice
+public class RefreshTokenException extends ResponseEntityExceptionHandler {
 
-    private static final long serialVersionUID = 1L;
-
-    public RefreshTokenException(String token, String message) {
-        super(String.format("Failed for [%s] : %s", token, message));
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> runtimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ResponseMessage("Error"));
     }
 }

@@ -95,7 +95,6 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-        System.out.println(refreshToken.getToken());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new JwtResponse(
@@ -116,6 +115,6 @@ public class AuthController {
                     return ResponseEntity.status(HttpStatus.OK)
                             .body(new RefreshTokenResponse(token, request));
                 })
-                .orElseThrow(() -> new RefreshTokenException(request, "Refresh token not store on database"));
+                .orElseThrow(() -> new RuntimeException());
     }
 }
