@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    void createEmployee(Employee employee) throws FailedValueBody;
+    void createEmployee(Employee employee);
 
     List<Employee> getAllEmployee();
 }

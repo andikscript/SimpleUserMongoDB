@@ -18,12 +18,8 @@ public class EmployeImpl implements EmployeeService {
     }
 
     @Override
-    public void createEmployee(Employee employee) throws FailedValueBody {
-        if (employee.getNama() == null || employee.getGaji() == null) {
-            throw new FailedValueBody();
-        } else {
-            employeeRepository.save(employee);
-        }
+    public void createEmployee(Employee employee)  {
+        employeeRepository.save(employee);
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api/employee")
 public class EmployeController {
@@ -18,7 +20,7 @@ public class EmployeController {
     }
 
     @PostMapping(value = "/add", consumes = "application/json")
-    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) throws FailedValueBody {
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee) {
         employeeService.createEmployee(employee);
         return ResponseEntity
                 .status(HttpStatus.OK)
