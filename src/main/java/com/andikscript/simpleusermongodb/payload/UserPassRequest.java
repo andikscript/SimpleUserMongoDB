@@ -1,9 +1,13 @@
 package com.andikscript.simpleusermongodb.payload;
 
+import javax.validation.constraints.NotNull;
+
 public class UserPassRequest {
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String password;
 
     public String getUsername() {

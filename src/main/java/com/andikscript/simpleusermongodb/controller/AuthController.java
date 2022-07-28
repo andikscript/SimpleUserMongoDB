@@ -24,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/signin", consumes = "application/json")
-    public ResponseEntity<?> authUser(@RequestBody UserPassRequest userPassRequest) throws FailedValueBody {
+    public ResponseEntity<?> authUser(@Valid @RequestBody UserPassRequest userPassRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.authUser(userPassRequest));

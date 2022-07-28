@@ -71,11 +71,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public JwtResponse authUser(UserPassRequest userPassRequest) throws FailedValueBody {
-        if (userPassRequest.getUsername() == null || userPassRequest.getPassword() == null) {
-            throw new FailedValueBody();
-        }
-
+    public JwtResponse authUser(UserPassRequest userPassRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userPassRequest.getUsername(),
                         userPassRequest.getPassword())

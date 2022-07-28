@@ -17,7 +17,7 @@ public interface UserService {
 
     Optional<User> getUserByUsername(String username);
 
-    JwtResponse authUser(UserPassRequest userPassRequest) throws FailedValueBody;
+    JwtResponse authUser(UserPassRequest userPassRequest);
 
     RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws RefreshTokenExpired;
 }
