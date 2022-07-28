@@ -4,29 +4,18 @@ import com.andikscript.simpleusermongodb.handling.FailedValueBody;
 import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
-import com.andikscript.simpleusermongodb.model.RefreshToken;
-import com.andikscript.simpleusermongodb.model.User;
-import com.andikscript.simpleusermongodb.payload.JwtResponse;
+import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
-import com.andikscript.simpleusermongodb.payload.RefreshTokenResponse;
 import com.andikscript.simpleusermongodb.payload.UserPassRequest;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
 import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
-import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
 import com.andikscript.simpleusermongodb.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/auth")

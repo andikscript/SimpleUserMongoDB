@@ -1,10 +1,9 @@
 package com.andikscript.simpleusermongodb.security.refresh;
 
-import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
-import com.andikscript.simpleusermongodb.model.RefreshToken;
-import com.andikscript.simpleusermongodb.model.User;
-import com.andikscript.simpleusermongodb.repository.RefreshRepository;
-import com.andikscript.simpleusermongodb.repository.UserRepository;
+import com.andikscript.simpleusermongodb.model.mongo.RefreshToken;
+import com.andikscript.simpleusermongodb.model.mongo.User;
+import com.andikscript.simpleusermongodb.repository.mongo.RefreshRepository;
+import com.andikscript.simpleusermongodb.repository.mongo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

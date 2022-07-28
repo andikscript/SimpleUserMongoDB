@@ -1,6 +1,6 @@
-package com.andikscript.simpleusermongodb.repository;
+package com.andikscript.simpleusermongodb.repository.mongo;
 
-import com.andikscript.simpleusermongodb.model.User;
+import com.andikscript.simpleusermongodb.model.mongo.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.andikscript.simpleusermongodb.model;
+package com.andikscript.simpleusermongodb.model.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

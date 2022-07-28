@@ -1,7 +1,7 @@
 package com.andikscript.simpleusermongodb.security.service;
 
-import com.andikscript.simpleusermongodb.model.User;
-import com.andikscript.simpleusermongodb.repository.UserRepository;
+import com.andikscript.simpleusermongodb.model.mongo.User;
+import com.andikscript.simpleusermongodb.repository.mongo.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

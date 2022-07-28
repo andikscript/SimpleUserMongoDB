@@ -1,4 +1,4 @@
-package com.andikscript.simpleusermongodb.model;
+package com.andikscript.simpleusermongodb.model.mongo;
 
 public class Role {
 

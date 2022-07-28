@@ -1,6 +1,6 @@
 package com.andikscript.simpleusermongodb.security.service;
 
-import com.andikscript.simpleusermongodb.model.User;
+import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
