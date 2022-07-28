@@ -20,19 +20,6 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
                 .body(new ResponseMessage("Value not complete"));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> runtimeException(RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ResponseMessage("Error"));
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<?> nullPointerException(NullPointerException e) {
-        return ResponseEntity
-                .status(HttpStatus.EXPECTATION_FAILED)
-                .body(new ResponseMessage("Error"));
-    }
-
     @ExceptionHandler(UserAlready.class)
     public ResponseEntity<?> userAlready(UserAlready e) {
         return ResponseEntity
