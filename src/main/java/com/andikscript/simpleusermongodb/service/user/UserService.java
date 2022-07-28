@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void createUser(User user) throws FailedValueBody, UserAlready;
+    void createUser(User user) throws UserAlready;
 
     Optional<User> getUserByUsername(String username);
 

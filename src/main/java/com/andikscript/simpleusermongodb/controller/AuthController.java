@@ -46,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/signup", consumes = "application/json")
-    public ResponseEntity<?> createUser(@RequestBody User user) throws FailedValueBody, UserAlready {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) throws UserAlready {
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseMessage("Successfully create user"));

@@ -3,20 +3,27 @@ package com.andikscript.simpleusermongodb.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 @Document(collection = "user")
 public class User {
 
     @Id
     private String id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String email;
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String password;
 
+    @NotNull
     private Role[] roles;
 
     public String getId() {

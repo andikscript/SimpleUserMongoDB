@@ -48,13 +48,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user) throws FailedValueBody, UserAlready {
-        if (user.getName() == null || user.getEmail() == null ||
-                user.getUsername() == null || user.getPassword() == null ||
-                user.getRoles().length == 0) {
-            throw new FailedValueBody();
-        }
-
+    public void createUser(User user) throws UserAlready {
         if (userRepository.findByUsername(user.getUsername()).isPresent() ||
                 userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserAlready();
