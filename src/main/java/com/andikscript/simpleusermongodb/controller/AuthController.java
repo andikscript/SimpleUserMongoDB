@@ -68,7 +68,11 @@ public class AuthController {
 
     @PostMapping(value = "/signout")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('ROOT')")
-    public ResponseEntity<?> signout(@RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<?> signout(@RequestHeader(value = "Authorization") String token) throws FailedValueBody {
+        if (token == null) {
+            throw new FailedValueBody();
+        }
+
         String user = jwtUtils.getUsernameFromJwtToken(token.substring(7));
         refreshTokenService.deleteByUser(userService.getUserByUsername(user).get());
         return ResponseEntity
