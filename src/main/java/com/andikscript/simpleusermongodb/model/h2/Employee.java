@@ -2,14 +2,15 @@ package com.andikscript.simpleusermongodb.model.h2;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Entity
 @Table(name = "employee")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @GeneratedValue
+    @Column(name = "id", length = 16)
+    private UUID id;
 
     @NotNull
     @Column(name = "nama", nullable = false, length = 512)
@@ -19,12 +20,8 @@ public class Employee {
     @Column(name = "gaji", nullable = false)
     private Integer gaji;
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getNama() {
