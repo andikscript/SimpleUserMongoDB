@@ -26,6 +26,8 @@ public class User {
     @NotNull
     private Role[] roles;
 
+    private String confirmed;
+
     public String getId() {
         return id;
     }
@@ -72,5 +74,13 @@ public class User {
 
     public void setRoles(Role[] roles) {
         this.roles = roles;
+    }
+
+    public String getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(String confirmed) {
+        this.confirmed = confirmed;
     }
 }
