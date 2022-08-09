@@ -4,6 +4,7 @@ package com.andikscript.simpleusermongodb.exception;
 import com.andikscript.simpleusermongodb.handling.FailedValueBody;
 import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
+import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,12 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ResponseMessage("Refresh token is expired"));
+    }
+
+    @ExceptionHandler(UserNotConfirmed.class)
+    public ResponseEntity<?> userNotConfirmed(UserNotConfirmed e) {
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseMessage("User unconfirmed"));
     }
 }
