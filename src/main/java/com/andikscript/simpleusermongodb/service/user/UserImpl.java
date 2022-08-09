@@ -1,8 +1,6 @@
 package com.andikscript.simpleusermongodb.service.user;
 
-import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
-import com.andikscript.simpleusermongodb.handling.UserAlready;
-import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
+import com.andikscript.simpleusermongodb.handling.*;
 import com.andikscript.simpleusermongodb.model.mongo.RefreshToken;
 import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
@@ -105,5 +103,17 @@ public class UserImpl implements UserService {
                     return new RefreshTokenResponse(token, request);
                 })
                 .orElseThrow(() -> new RefreshTokenExpired());
+    }
+
+    @Override
+    public void findConfirmed(String confirmed) throws UserNotRegister{
+        Optional<User> user = userRepository.findByConfirmed(confirmed);
+
+        if (!user.isPresent()) {
+            throw new UserNotRegister();
+        }
+
+        user.get().setConfirmed("confirmed");
+        userRepository.save(user.get());
     }
 }

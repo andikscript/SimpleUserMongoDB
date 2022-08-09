@@ -1,8 +1,6 @@
 package com.andikscript.simpleusermongodb.service.user;
 
-import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
-import com.andikscript.simpleusermongodb.handling.UserAlready;
-import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
+import com.andikscript.simpleusermongodb.handling.*;
 import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
@@ -20,4 +18,6 @@ public interface UserService {
     JwtResponse authUser(UserPassRequest userPassRequest) throws UserNotConfirmed;
 
     RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws RefreshTokenExpired;
+
+    void findConfirmed(String confirmed) throws UserNotRegister;
 }
