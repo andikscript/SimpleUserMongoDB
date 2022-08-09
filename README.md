@@ -10,6 +10,8 @@ Simple signup and signin with spring boot and spring security json web token and
 - Refresh Token
 - MongoDB
 - H2 
+- Spring Mail
+- Email Confirmed
 
 ## Roles
 - USER
