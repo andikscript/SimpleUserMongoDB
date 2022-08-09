@@ -2,6 +2,7 @@ package com.andikscript.simpleusermongodb.service.user;
 
 import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
+import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
 import com.andikscript.simpleusermongodb.model.mongo.RefreshToken;
 import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
@@ -12,6 +13,7 @@ import com.andikscript.simpleusermongodb.repository.mongo.UserRepository;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
 import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
 import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
+import com.andikscript.simpleusermongodb.util.RandomNumberWord;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,14 +38,17 @@ public class UserImpl implements UserService {
 
     private final RefreshTokenService refreshTokenService;
 
+    private final RandomNumberWord randomNumberWord;
+
     public UserImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
                     AuthenticationManager authenticationManager, JwtUtils jwtUtils,
-                    RefreshTokenService refreshTokenService) {
+                    RefreshTokenService refreshTokenService, RandomNumberWord randomNumberWord) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
+        this.randomNumberWord = randomNumberWord;
     }
 
     @Override
@@ -55,6 +60,7 @@ public class UserImpl implements UserService {
 
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
+        user.setConfirmed(randomNumberWord.random());
         userRepository.save(user);
     }
 
@@ -64,7 +70,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public JwtResponse authUser(UserPassRequest userPassRequest){
+    public JwtResponse authUser(UserPassRequest userPassRequest) throws UserNotConfirmed {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userPassRequest.getUsername(),
                         userPassRequest.getPassword())
@@ -72,6 +78,10 @@ public class UserImpl implements UserService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if (!userDetails.getConfirmed().equals("confirmed")) {
+            throw new UserNotConfirmed();
+        }
+
         String jwt = jwtUtils.generateJwtToken(userDetails);
 
         List<String> roles = userDetails.getAuthorities().stream()

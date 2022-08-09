@@ -3,6 +3,7 @@ package com.andikscript.simpleusermongodb.controller;
 import com.andikscript.simpleusermongodb.handling.FailedValueBody;
 import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
 import com.andikscript.simpleusermongodb.handling.UserAlready;
+import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
@@ -42,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/signin", consumes = "application/json")
-    public ResponseEntity<?> authUser(@Valid @RequestBody UserPassRequest userPassRequest) {
+    public ResponseEntity<?> authUser(@Valid @RequestBody UserPassRequest userPassRequest) throws UserNotConfirmed {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.authUser(userPassRequest));
