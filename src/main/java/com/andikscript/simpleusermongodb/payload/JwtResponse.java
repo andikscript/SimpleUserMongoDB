@@ -11,16 +11,12 @@ public class JwtResponse {
     private String refreshToken;
 
     private String username;
-
-    private String password;
-
     private List roles;
 
-    public JwtResponse(String accessToken, String refreshToken, String username, String password, List roles) {
+    public JwtResponse(String accessToken, String refreshToken, String username, List roles) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.username = username;
-        this.password = password;
         this.roles = roles;
     }
 
@@ -46,10 +42,6 @@ public class JwtResponse {
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public List getRoles() {

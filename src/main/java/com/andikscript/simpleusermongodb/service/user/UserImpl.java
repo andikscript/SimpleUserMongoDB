@@ -88,8 +88,7 @@ public class UserImpl implements UserService {
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
         return new JwtResponse(
-                        jwt, refreshToken.getToken(), userDetails.getUsername(),
-                        userDetails.getPassword(), roles);
+                        jwt, refreshToken.getToken(), userDetails.getUsername(), roles);
     }
 
     @Override
