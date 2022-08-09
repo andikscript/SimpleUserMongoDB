@@ -70,7 +70,7 @@ public class UserImpl implements UserService {
         Email email = new Email();
         email.setReceived(user.getEmail());
         email.setSubject("User Confirmed");
-        email.setMessage("click link below : http://localhost:8080/api/email/" +
+        email.setMessage("click link below for confirmed : http://localhost:8080/api/email/" +
                 user.getConfirmed() + "/confirmed");
         emailService.sendEmail(email);
     }
