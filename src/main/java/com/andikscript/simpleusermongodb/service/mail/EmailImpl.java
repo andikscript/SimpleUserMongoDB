@@ -19,18 +19,14 @@ public class EmailImpl implements EmailService {
     private String sender;
 
     @Override
-    public String sendEmail(Email email) throws Exception {
-        try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(sender);
-            mailMessage.setTo(email.getReceived());
-            mailMessage.setSubject(email.getSubject());
-            mailMessage.setText(email.getMessage());
+    public String sendEmail(Email email) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(email.getReceived());
+        mailMessage.setSubject(email.getSubject());
+        mailMessage.setText(email.getMessage());
 
-            javaMailSender.send(mailMessage);
-            return "Mail sent success";
-        } catch (Exception e) {
-            throw new Exception();
-        }
+        javaMailSender.send(mailMessage);
+        return "Mail sent success";
     }
 }

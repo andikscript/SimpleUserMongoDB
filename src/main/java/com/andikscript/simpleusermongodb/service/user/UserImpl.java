@@ -7,10 +7,12 @@ import com.andikscript.simpleusermongodb.payload.JwtResponse;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenResponse;
 import com.andikscript.simpleusermongodb.payload.UserPassRequest;
+import com.andikscript.simpleusermongodb.repository.mail.Email;
 import com.andikscript.simpleusermongodb.repository.mongo.UserRepository;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
 import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
 import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
+import com.andikscript.simpleusermongodb.service.mail.EmailService;
 import com.andikscript.simpleusermongodb.util.RandomNumberWord;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,15 +40,20 @@ public class UserImpl implements UserService {
 
     private final RandomNumberWord randomNumberWord;
 
+    private final EmailService emailService;
+
+
     public UserImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
                     AuthenticationManager authenticationManager, JwtUtils jwtUtils,
-                    RefreshTokenService refreshTokenService, RandomNumberWord randomNumberWord) {
+                    RefreshTokenService refreshTokenService, RandomNumberWord randomNumberWord,
+                    EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
         this.randomNumberWord = randomNumberWord;
+        this.emailService = emailService;
     }
 
     @Override
@@ -60,6 +67,12 @@ public class UserImpl implements UserService {
         user.setPassword(password);
         user.setConfirmed(randomNumberWord.random());
         userRepository.save(user);
+        Email email = new Email();
+        email.setReceived(user.getEmail());
+        email.setSubject("User Confirmed");
+        email.setMessage("click link below : http://localhost:8080/api/email/" +
+                user.getConfirmed() + "/confirmed");
+        emailService.sendEmail(email);
     }
 
     @Override
