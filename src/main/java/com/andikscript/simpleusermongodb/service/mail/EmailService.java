@@ -4,5 +4,5 @@ import com.andikscript.simpleusermongodb.repository.mail.Email;
 
 public interface EmailService {
 
-    String sendEmail(Email email);
+    void sendEmail(Email email);
 }
