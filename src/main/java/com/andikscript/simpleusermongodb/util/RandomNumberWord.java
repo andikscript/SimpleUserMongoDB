@@ -9,7 +9,7 @@ public class RandomNumberWord {
 
     public String random() {
         String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
-                +"lmnopqrstuvwxyz!@#$%&";
+                +"lmnopqrstuvwxyz";
         Random rnd = new Random();
         StringBuilder sb = new StringBuilder(50);
         for (int i = 0; i < 50; i++)
