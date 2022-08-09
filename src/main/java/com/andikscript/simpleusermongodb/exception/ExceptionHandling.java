@@ -1,10 +1,7 @@
 package com.andikscript.simpleusermongodb.exception;
 
 
-import com.andikscript.simpleusermongodb.handling.FailedValueBody;
-import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
-import com.andikscript.simpleusermongodb.handling.UserAlready;
-import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
+import com.andikscript.simpleusermongodb.handling.*;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +38,12 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ResponseMessage("User unconfirmed"));
+    }
+
+    @ExceptionHandler(UserNotRegister.class)
+    public ResponseEntity<?> userNotRegister(UserNotRegister e) {
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseMessage("User not register or already confirmed"));
     }
 }
