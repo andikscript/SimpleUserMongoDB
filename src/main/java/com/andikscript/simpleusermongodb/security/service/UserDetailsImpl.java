@@ -27,14 +27,18 @@ public class UserDetailsImpl implements UserDetails {
 
     private String confirmed;
 
+    private String phone;
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String id, String username, String email, String password, String confirmed, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(String id, String username, String email, String password,
+                           String confirmed, String phone, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.confirmed = confirmed;
+        this.phone = phone;
         this.authorities = authorities;
     }
 
@@ -48,6 +52,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getConfirmed(),
+                user.getPhone(),
                 authorities
         );
     }
@@ -77,6 +82,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getConfirmed() {
         return confirmed;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public void setConfirmed(String confirmed) {
