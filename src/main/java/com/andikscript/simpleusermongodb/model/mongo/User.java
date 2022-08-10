@@ -3,6 +3,7 @@ package com.andikscript.simpleusermongodb.model.mongo;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Document(collection = "user")
@@ -11,22 +12,24 @@ public class User {
     @Id
     private String id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
-    @NotNull
+    @NotBlank
     private String email;
 
-    @NotNull
+    @NotBlank
     private String username;
 
-    @NotNull
+    @NotBlank
     private String password;
 
     @NotNull
     private Role[] roles;
 
     private String confirmed;
+
+    private String phone;
 
     public String getId() {
         return id;
@@ -82,5 +85,13 @@ public class User {
 
     public void setConfirmed(String confirmed) {
         this.confirmed = confirmed;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
