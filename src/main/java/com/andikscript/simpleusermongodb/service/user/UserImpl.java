@@ -13,6 +13,7 @@ import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
 import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
 import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
 import com.andikscript.simpleusermongodb.service.mail.EmailService;
+import com.andikscript.simpleusermongodb.service.sms.SendMessageService;
 import com.andikscript.simpleusermongodb.util.RandomNumberWord;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,11 +43,12 @@ public class UserImpl implements UserService {
 
     private final EmailService emailService;
 
+    private final SendMessageService sendMessageService;
 
     public UserImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
                     AuthenticationManager authenticationManager, JwtUtils jwtUtils,
                     RefreshTokenService refreshTokenService, RandomNumberWord randomNumberWord,
-                    EmailService emailService) {
+                    EmailService emailService, SendMessageService sendMessageService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -54,6 +56,7 @@ public class UserImpl implements UserService {
         this.refreshTokenService = refreshTokenService;
         this.randomNumberWord = randomNumberWord;
         this.emailService = emailService;
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
@@ -89,9 +92,12 @@ public class UserImpl implements UserService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
         if (!userDetails.getConfirmed().equals("confirmed")) {
             throw new UserNotConfirmed();
         }
+
+        sendMessageService.sendMessage(userDetails.getPhone(), "code C41");
 
         String jwt = jwtUtils.generateJwtToken(userDetails);
 
