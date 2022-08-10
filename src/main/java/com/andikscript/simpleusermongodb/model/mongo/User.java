@@ -29,6 +29,7 @@ public class User {
 
     private String confirmed;
 
+    @NotBlank
     private String phone;
 
     public String getId() {
