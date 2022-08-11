@@ -15,7 +15,9 @@ public interface UserService {
 
     Optional<User> getUserByUsername(String username);
 
-    JwtResponse authUser(UserPassRequest userPassRequest) throws UserNotConfirmed;
+    void getVerify(UserPassRequest userPassRequest) throws UserNotConfirmed;
+
+    JwtResponse authUser(String code) throws UserNotVerify;
 
     RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws RefreshTokenExpired;
 

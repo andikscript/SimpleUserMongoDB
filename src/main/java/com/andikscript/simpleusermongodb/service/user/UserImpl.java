@@ -3,6 +3,7 @@ package com.andikscript.simpleusermongodb.service.user;
 import com.andikscript.simpleusermongodb.handling.*;
 import com.andikscript.simpleusermongodb.model.mongo.RefreshToken;
 import com.andikscript.simpleusermongodb.model.mongo.User;
+import com.andikscript.simpleusermongodb.model.mongo.Verify;
 import com.andikscript.simpleusermongodb.payload.JwtResponse;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenResponse;
@@ -14,6 +15,7 @@ import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
 import com.andikscript.simpleusermongodb.security.service.UserDetailsImpl;
 import com.andikscript.simpleusermongodb.service.mail.EmailService;
 import com.andikscript.simpleusermongodb.service.sms.SendMessageService;
+import com.andikscript.simpleusermongodb.service.verify.VerifyService;
 import com.andikscript.simpleusermongodb.util.RandomNumberWord;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,10 +48,13 @@ public class UserImpl implements UserService {
 
     private final SendMessageService sendMessageService;
 
+    private final VerifyService verifyService;
+
     public UserImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
                     AuthenticationManager authenticationManager, JwtUtils jwtUtils,
                     RefreshTokenService refreshTokenService, RandomNumberWord randomNumberWord,
-                    EmailService emailService, SendMessageService sendMessageService) {
+                    EmailService emailService, SendMessageService sendMessageService,
+                    VerifyService verifyService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -57,6 +63,7 @@ public class UserImpl implements UserService {
         this.randomNumberWord = randomNumberWord;
         this.emailService = emailService;
         this.sendMessageService = sendMessageService;
+        this.verifyService = verifyService;
     }
 
     @Override
@@ -84,7 +91,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public JwtResponse authUser(UserPassRequest userPassRequest) throws UserNotConfirmed {
+    public void getVerify(UserPassRequest userPassRequest) throws UserNotConfirmed {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userPassRequest.getUsername(),
                         userPassRequest.getPassword())
@@ -96,18 +103,29 @@ public class UserImpl implements UserService {
         if (!userDetails.getConfirmed().equals("confirmed")) {
             throw new UserNotConfirmed();
         }
+        String code = randomNumberWord.randomNumber();
+        sendMessageService.sendMessage(userDetails.getPhone(), "Your verification : " + code);
 
-        sendMessageService.sendMessage(userDetails.getPhone(), "code C41");
+        verifyService.createVerify(new Verify(userDetails.getId(), code));
+    }
 
-        String jwt = jwtUtils.generateJwtToken(userDetails);
+    @Override
+    public JwtResponse authUser(String code) throws UserNotVerify {
+        Optional<Verify> getVerify = verifyService.findByCode(code);
 
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+        if (!getVerify.isPresent()) {
+            throw new UserNotVerify();
+        }
 
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        verifyService.deleteByCode(code);
+
+        Optional<User> getUser = userRepository.findById(getVerify.get().getIdUser());
+
+        String jwt = jwtUtils.generateJwtToken(getUser.get().getUsername());
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(getUser.get().getId());
         return new JwtResponse(
-                        jwt, refreshToken.getToken(), userDetails.getUsername(), roles);
+                        jwt, refreshToken.getToken(), getUser.get().getUsername(), Arrays.asList(getUser.get().getRoles()));
     }
 
     @Override
