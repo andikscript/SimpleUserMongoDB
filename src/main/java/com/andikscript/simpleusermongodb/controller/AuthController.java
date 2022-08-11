@@ -1,9 +1,6 @@
 package com.andikscript.simpleusermongodb.controller;
 
-import com.andikscript.simpleusermongodb.handling.FailedValueBody;
-import com.andikscript.simpleusermongodb.handling.RefreshTokenExpired;
-import com.andikscript.simpleusermongodb.handling.UserAlready;
-import com.andikscript.simpleusermongodb.handling.UserNotConfirmed;
+import com.andikscript.simpleusermongodb.handling.*;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.mongo.User;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
@@ -44,9 +41,17 @@ public class AuthController {
 
     @PostMapping(value = "/signin", consumes = "application/json")
     public ResponseEntity<?> authUser(@Valid @RequestBody UserPassRequest userPassRequest) throws UserNotConfirmed {
+        userService.getVerify(userPassRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.authUser(userPassRequest));
+                .body(new ResponseMessage("Verfication code already send your phone"));
+    }
+
+    @GetMapping(value = "/{code}/verification", produces = "application/json")
+    public ResponseEntity<?> authUser(@PathVariable(value = "code") String code) throws UserNotVerify {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.authUser(code));
     }
 
     @PostMapping(value = "/refreshtoken", consumes = "application/json")
