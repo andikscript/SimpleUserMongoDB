@@ -20,8 +20,8 @@ public class JwtUtils {
     @Value("${SimpleUserMongoDB.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    public String generateJwtToken(UserDetailsImpl userDetails) {
-        return generateTokenFromUsername(userDetails.getUsername());
+    public String generateJwtToken(String username) {
+        return generateTokenFromUsername(username);
     }
 
     public String generateTokenFromUsername(String username) {
