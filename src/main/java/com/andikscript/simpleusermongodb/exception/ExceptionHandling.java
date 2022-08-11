@@ -46,4 +46,11 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.EXPECTATION_FAILED)
                 .body(new ResponseMessage("User not register or already confirmed"));
     }
+
+    @ExceptionHandler(UserNotVerify.class)
+    public ResponseEntity<?> userNotVerify(UserNotVerify e) {
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseMessage("User not verify"));
+    }
 }
