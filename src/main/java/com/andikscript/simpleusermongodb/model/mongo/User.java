@@ -1,6 +1,7 @@
 package com.andikscript.simpleusermongodb.model.mongo;
 
 import com.andikscript.simpleusermongodb.constrainst.email.EmailValue;
+import com.andikscript.simpleusermongodb.constrainst.phone.PhoneValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,6 +33,7 @@ public class User {
     private String confirmed;
 
     @NotBlank(message = "phone is mandatory")
+    @PhoneValue(message = "phone not valid")
     private String phone;
 
     public String getId() {
