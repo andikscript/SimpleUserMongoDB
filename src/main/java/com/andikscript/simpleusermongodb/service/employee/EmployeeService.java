@@ -1,7 +1,6 @@
 package com.andikscript.simpleusermongodb.service.employee;
 
-import com.andikscript.simpleusermongodb.handling.FailedValueBody;
-import com.andikscript.simpleusermongodb.model.h2.Employee;
+import com.andikscript.simpleusermongodb.model.postgresql.Employee;
 
 import java.util.List;
 

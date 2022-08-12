@@ -1,4 +1,4 @@
-package com.andikscript.simpleusermongodb.model.h2;
+package com.andikscript.simpleusermongodb.model.postgresql;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
