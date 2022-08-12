@@ -12,24 +12,24 @@ public class User {
     @Id
     private String id;
 
-    @NotBlank
+    @NotBlank(message = "name is mandatory")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "email is mandatory")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "username is mandatory")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "password is mandatory")
     private String password;
 
-    @NotNull
+    @NotNull(message = "role is mandatory")
     private Role[] roles;
 
     private String confirmed;
 
-    @NotBlank
+    @NotBlank(message = "phone is mandatory")
     private String phone;
 
     public String getId() {
