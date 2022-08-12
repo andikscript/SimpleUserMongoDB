@@ -1,5 +1,5 @@
-# Simple User MongoDB (NoSQL) & POSTGRESQL (SQL)
-Simple signup and signin with spring boot and spring security json web token and combine database MongoDB (NoSQL) & H2 (SQL)
+# Simple User MongoDB (NoSQL) & PostgreSQL (SQL)
+Simple signup and signin with spring boot and spring security json web token and combine database MongoDB (NoSQL) & PostgreSQL (SQL)
 
 ## Featured :
 - Spring Boot 
