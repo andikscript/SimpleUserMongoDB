@@ -13,6 +13,7 @@ Simple signup and signin with spring boot and spring security json web token and
 - Spring Mail
 - Email confirmed for register
 - SMS confirmed by verification code if user login
+- Spring validation
 
 ## Roles
 - USER
@@ -23,7 +24,8 @@ Simple signup and signin with spring boot and spring security json web token and
 Methods | Url | Action |
 --- | --- | --- |
 | POST | /api/auth/signup | signup new account |
-| POST | /api/auth/signin | login an account |
+| POST | /api/auth/signin | register confirmation by email an account |
+| GET | /api/auth/{verify code}/verification | login an account by verify code send to sms |
 | POST | /api/auth/refreshtoken | get new token from refresh token |
 | POST | /api/auth/signout | logout an account |
 | GET | /api/test/all | public access content |
@@ -44,7 +46,8 @@ Methods | Url | Action |
         "id": {id_roles}
         "name":"{ROLE_"USER/ADMIN/ROOT"}"
         }
-    ]
+    ],
+    "phone": "{number phone}"
 }
 ```
 
