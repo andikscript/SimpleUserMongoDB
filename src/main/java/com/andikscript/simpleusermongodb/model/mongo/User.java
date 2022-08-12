@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.model.mongo;
 
+import com.andikscript.simpleusermongodb.constrainst.email.EmailValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,6 +17,7 @@ public class User {
     private String name;
 
     @NotBlank(message = "email is mandatory")
+    @EmailValue(message = "email must valid")
     private String email;
 
     @NotBlank(message = "username is mandatory")
