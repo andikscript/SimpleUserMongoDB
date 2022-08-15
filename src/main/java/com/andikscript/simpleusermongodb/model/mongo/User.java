@@ -5,8 +5,10 @@ import com.andikscript.simpleusermongodb.constrainst.phone.PhoneValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Document(collection = "user")
 public class User {
@@ -25,6 +27,7 @@ public class User {
     private String username;
 
     @NotBlank(message = "password is mandatory")
+    @Size(min = 8, message = "Password must be longer than 8 characters")
     private String password;
 
     @NotNull(message = "role is mandatory")
