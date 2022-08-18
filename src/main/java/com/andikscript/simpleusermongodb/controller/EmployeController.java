@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.controller;
 
+import com.andikscript.simpleusermongodb.handling.UserNotFound;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.postgresql.Employee;
 import com.andikscript.simpleusermongodb.service.employee.EmployeeService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/employee")
@@ -30,5 +32,14 @@ public class EmployeController {
     public ResponseEntity<?> getAllEmployee() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(employeeService.getAllEmployee());
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<?> updateEmployee(@Valid @RequestBody Employee employee,
+                                            @PathVariable(value = "id") UUID id) throws UserNotFound {
+        employeeService.updateEmployee(employee, id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Success update employee"));
     }
 }
