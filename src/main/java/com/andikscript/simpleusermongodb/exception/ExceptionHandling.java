@@ -66,6 +66,18 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
                 .body(new ResponseMessage("User not verify"));
     }
 
+    @ExceptionHandler(UserNotFound.class)
+    public ResponseEntity<?> userNotFound(UserNotFound e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new Error(
+                        HttpStatus.BAD_REQUEST,
+                        LocalDateTime.now(),
+                        "Error user not found",
+                        Arrays.asList(e.getStackTrace())
+                ));
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> getError = new ArrayList<>();
