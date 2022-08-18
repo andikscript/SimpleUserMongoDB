@@ -13,4 +13,6 @@ public interface EmployeeService {
     List<Employee> getAllEmployee();
 
     void updateEmployee(Employee employee, UUID id) throws UserNotFound;
+
+    void deleteEmployee(UUID id) throws UserNotFound;
 }

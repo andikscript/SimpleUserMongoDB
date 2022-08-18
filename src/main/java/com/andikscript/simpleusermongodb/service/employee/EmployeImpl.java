@@ -39,4 +39,15 @@ public class EmployeImpl implements EmployeeService {
         employee.setId(id);
         employeeRepository.save(employee);
     }
+
+    @Override
+    public void deleteEmployee(UUID id) throws UserNotFound {
+        Optional<Employee> getEmployee = employeeRepository.findById(id);
+
+        if (!getEmployee.isPresent()) {
+            throw new UserNotFound();
+        }
+
+        employeeRepository.deleteById(id);
+    }
 }
