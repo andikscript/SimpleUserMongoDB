@@ -1,6 +1,8 @@
 package com.andikscript.simpleusermongodb.model.postgresql;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -12,16 +14,21 @@ public class Employee {
     @Column(name = "id", length = 16)
     private UUID id;
 
-    @NotNull
+    @NotBlank(message = "name is mandatory")
     @Column(name = "nama", nullable = false, length = 512)
     private String nama;
 
-    @NotNull
+    @NotNull(message = "gaji is mandatory")
+    @Min(0)
     @Column(name = "gaji", nullable = false)
     private Integer gaji;
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getNama() {
