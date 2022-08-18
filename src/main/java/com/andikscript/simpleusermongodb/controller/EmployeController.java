@@ -42,4 +42,12 @@ public class EmployeController {
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Success update employee"));
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> updateEmployee(@PathVariable(value = "id") UUID id) throws UserNotFound {
+        employeeService.deleteEmployee(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("Success delete employee"));
+    }
 }
