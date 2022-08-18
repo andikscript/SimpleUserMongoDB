@@ -73,8 +73,8 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
                 .body(new Error(
                         HttpStatus.BAD_REQUEST,
                         LocalDateTime.now(),
-                        "Error user not found",
-                        Arrays.asList(e.getStackTrace())
+                        "Error",
+                        Arrays.asList("Error user not found")
                 ));
     }
 
