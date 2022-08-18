@@ -7,10 +7,15 @@ public class PhoneValidator implements ConstraintValidator<PhoneValue, String> {
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if (s.contains("+") && s.length() == 14) {
-            return true;
+        System.out.println(s.substring(1));
+        try {
+            Double phone = Double.valueOf(s.substring(1));
+            if (s.contains("+") && s.length() == 14) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            return false;
         }
-
-        return false;
+        return true;
     }
 }
