@@ -14,6 +14,7 @@ Simple signup and signin with spring boot and spring security json web token and
 - Email confirmed for register
 - SMS confirmed by verification code if user login
 - Spring validation
+- Simple Chat User
 
 ## Roles
 - USER
