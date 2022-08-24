@@ -1,4 +1,4 @@
-package com.andikscript.simpleusermongodb.repository.mail;
+package com.andikscript.simpleusermongodb.model.mail;
 
 public class Email {
 
