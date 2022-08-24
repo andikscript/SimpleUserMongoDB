@@ -8,7 +8,7 @@ import com.andikscript.simpleusermongodb.payload.JwtResponse;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenRequest;
 import com.andikscript.simpleusermongodb.payload.RefreshTokenResponse;
 import com.andikscript.simpleusermongodb.payload.UserPassRequest;
-import com.andikscript.simpleusermongodb.repository.mail.Email;
+import com.andikscript.simpleusermongodb.model.mail.Email;
 import com.andikscript.simpleusermongodb.repository.mongo.UserRepository;
 import com.andikscript.simpleusermongodb.security.jwt.JwtUtils;
 import com.andikscript.simpleusermongodb.security.refresh.RefreshTokenService;
@@ -25,9 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserImpl implements UserService {
