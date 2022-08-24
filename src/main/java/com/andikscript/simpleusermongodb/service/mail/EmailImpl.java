@@ -1,30 +1,20 @@
 package com.andikscript.simpleusermongodb.service.mail;
 
-import com.andikscript.simpleusermongodb.repository.mail.Email;
-import org.springframework.beans.factory.annotation.Value;
+import com.andikscript.simpleusermongodb.model.mail.Email;
+import com.github.sonus21.rqueue.core.RqueueMessageEnqueuer;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailImpl implements EmailService {
 
-    private JavaMailSender javaMailSender;
+    private final RqueueMessageEnqueuer rqueueMessageEnqueuer;
 
-    public EmailImpl(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
+    public EmailImpl(RqueueMessageEnqueuer rqueueMessageEnqueuer) {
+        this.rqueueMessageEnqueuer = rqueueMessageEnqueuer;
     }
-
-    @Value("${spring.mail.username}")
-    private String sender;
-
     @Override
     public void sendEmail(Email email) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(sender);
-        mailMessage.setTo(email.getReceived());
-        mailMessage.setSubject(email.getSubject());
-        mailMessage.setText(email.getMessage());
-        javaMailSender.send(mailMessage);
+        rqueueMessageEnqueuer.enqueue("send-email", email);
     }
 }
