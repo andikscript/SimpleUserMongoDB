@@ -17,6 +17,7 @@ Simple signup and signin with spring boot and spring security json web token and
 - Simple Chat User
 - Spring data redis
 - Email queue send
+- SMS queue send
 
 ## Roles
 - USER
