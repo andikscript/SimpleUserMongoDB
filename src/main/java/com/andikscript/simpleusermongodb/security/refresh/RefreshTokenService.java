@@ -6,6 +6,7 @@ import com.andikscript.simpleusermongodb.repository.mongo.RefreshRepository;
 import com.andikscript.simpleusermongodb.repository.mongo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@PropertySource("classpath:my.properties")
 public class RefreshTokenService {
 
     @Value("${SimpleUserMongoDB.app.jwtRefreshExpiration}")
