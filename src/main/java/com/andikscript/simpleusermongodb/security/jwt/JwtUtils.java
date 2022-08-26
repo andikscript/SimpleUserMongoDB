@@ -5,14 +5,14 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
+@PropertySource("classpath:my.properties")
 public class JwtUtils {
-
-//    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${SimpleUserMongoDB.app.jwtSecret}")
     private String jwtSecret;
