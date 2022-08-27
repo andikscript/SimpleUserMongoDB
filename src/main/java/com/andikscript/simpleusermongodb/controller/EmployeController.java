@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.controller;
 
+import com.andikscript.simpleusermongodb.handling.SoldOutSalary;
 import com.andikscript.simpleusermongodb.handling.UserNotFound;
 import com.andikscript.simpleusermongodb.message.ResponseMessage;
 import com.andikscript.simpleusermongodb.model.postgresql.Employee;
@@ -36,7 +37,7 @@ public class EmployeController {
 
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<?> updateEmployee(@Valid @RequestBody Employee employee,
-                                            @PathVariable(value = "id") UUID id) throws UserNotFound {
+                                            @PathVariable(value = "id") UUID id) throws UserNotFound, SoldOutSalary {
         employeeService.updateEmployee(employee, id);
         return ResponseEntity
                 .status(HttpStatus.OK)

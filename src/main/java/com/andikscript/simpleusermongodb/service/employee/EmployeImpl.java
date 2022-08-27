@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.service.employee;
 
+import com.andikscript.simpleusermongodb.handling.SoldOutSalary;
 import com.andikscript.simpleusermongodb.handling.UserNotFound;
 import com.andikscript.simpleusermongodb.model.postgresql.Employee;
 import com.andikscript.simpleusermongodb.repository.h2.EmployeeRepository;
@@ -29,7 +30,7 @@ public class EmployeImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(Employee employee, UUID id) throws UserNotFound {
+    public void updateEmployee(Employee employee, UUID id) throws UserNotFound, SoldOutSalary {
         Optional<Employee> getEmployee1 = employeeRepository.findById(id);
 
         if (!getEmployee1.isPresent()) {
@@ -37,6 +38,10 @@ public class EmployeImpl implements EmployeeService {
         }
 
         employee.setId(id);
+        if (getEmployee1.get().getGaji() - employee.getGaji() <= 0) {
+            throw new SoldOutSalary();
+        }
+        employee.setGaji(getEmployee1.get().getGaji() - employee.getGaji());
         employeeRepository.save(employee);
     }
 

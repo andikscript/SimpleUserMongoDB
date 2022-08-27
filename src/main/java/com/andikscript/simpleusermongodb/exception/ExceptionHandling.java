@@ -79,6 +79,13 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
                 .body(new ResponseMessage("User not verify"));
     }
 
+    @ExceptionHandler(SoldOutSalary.class)
+    public ResponseEntity<?> soldOutSalary(SoldOutSalary e) {
+        return ResponseEntity
+                .status(HttpStatus.EXPECTATION_FAILED)
+                .body(new ResponseMessage("salary is less than or equal to 0"));
+    }
+
     @ExceptionHandler(UserNotFound.class)
     public ResponseEntity<?> userNotFound(UserNotFound e) {
         return ResponseEntity

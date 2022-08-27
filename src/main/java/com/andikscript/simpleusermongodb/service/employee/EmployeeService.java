@@ -1,5 +1,6 @@
 package com.andikscript.simpleusermongodb.service.employee;
 
+import com.andikscript.simpleusermongodb.handling.SoldOutSalary;
 import com.andikscript.simpleusermongodb.handling.UserNotFound;
 import com.andikscript.simpleusermongodb.model.postgresql.Employee;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,7 @@ public interface EmployeeService {
     List<Employee> getAllEmployee();
 
     @PreAuthorize("hasRole('ROOT')")
-    void updateEmployee(Employee employee, UUID id) throws UserNotFound;
+    void updateEmployee(Employee employee, UUID id) throws UserNotFound, SoldOutSalary;
 
     @PreAuthorize("hasRole('ROOT')")
     void deleteEmployee(UUID id) throws UserNotFound;
