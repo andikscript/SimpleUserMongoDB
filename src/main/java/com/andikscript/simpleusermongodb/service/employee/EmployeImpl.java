@@ -55,4 +55,14 @@ public class EmployeImpl implements EmployeeService {
 
         employeeRepository.deleteById(id);
     }
+
+    @Override
+    public List<Employee> findNama(String name) {
+        return employeeRepository.findNama(name);
+    }
+
+    @Override
+    public List<Employee> findNamaGaji(String name, Integer gaji) {
+        return employeeRepository.findNamaGaji(name, gaji);
+    }
 }

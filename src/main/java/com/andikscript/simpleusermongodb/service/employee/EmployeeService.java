@@ -21,4 +21,8 @@ public interface EmployeeService {
 
     @PreAuthorize("hasRole('ROOT')")
     void deleteEmployee(UUID id) throws UserNotFound;
+
+    List<Employee> findNama(String name);
+
+    List<Employee> findNamaGaji(String name, Integer gaji);
 }

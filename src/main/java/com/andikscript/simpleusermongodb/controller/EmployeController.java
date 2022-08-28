@@ -51,4 +51,17 @@ public class EmployeController {
                 .status(HttpStatus.OK)
                 .body(new ResponseMessage("Success delete employee"));
     }
+
+    @GetMapping(value = "/employees/{name}")
+    public ResponseEntity<?> getAllEmployeeByNama(@PathVariable(value = "name") String name) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(employeeService.findNama(name));
+    }
+
+    @GetMapping(value = "/employees/{name}/{gaji}")
+    public ResponseEntity<?> getAllEmployeeByNamaGaji(@PathVariable(value = "name") String name,
+                                                      @PathVariable(value = "gaji") Integer gaji) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(employeeService.findNamaGaji(name, gaji));
+    }
 }
