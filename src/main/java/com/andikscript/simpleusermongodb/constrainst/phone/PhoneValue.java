@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface PhoneValue {
 
-    String message() default "{com.andikscript.simpleusermongodb.constrainst.email.EmailValue.message}";
+    String message() default "{com.andikscript.simpleusermongodb.constrainst.phone.PhoneValue.message}";
 
     Class<?> [] groups() default{};
 
